@@ -33,7 +33,10 @@ namespace Mint
 
             System.IO.StreamWriter fich_stg = new System.IO.StreamWriter(nom_fichier+ "_stg.txt", false);
             System.IO.StreamWriter fich_od = new System.IO.StreamWriter(nom_fichier + "_od.txt", false);
+            fich_od.WriteLine("o;d;temps;cout;ncorr");
             System.IO.StreamWriter fich_times = new System.IO.StreamWriter(nom_fichier + "_times.txt", false);
+            fich_times.WriteLine("d;id;i;j;line;ij;hdwy;time;cout;temps");
+            
             reseau.cwait = float.Parse(textBox4.Text);
             reseau.cmap = float.Parse(textBox3.Text);
             reseau.tboa = float.Parse(textBox5.Text);
@@ -949,7 +952,8 @@ namespace Mint
            
             foreach (Link link in reseau.links)
             {
-                fich_res.WriteLine(trip.d+";"+ link.id + ";" + link.i + ";" + link.j + ";" + link.line + ";" + link.hdwy + ";" + link.time + ";" + link.m + ";" + link.M + ";" + link.M0 + ";" + link.n + ";" + link.avg_cout + ";" + link.avg_time + ";" + link.pos + ";" + link.reached);
+                //fich_res.WriteLine("d;id;i;j;line;ij;hdwy;time;cout;temps");
+                fich_res.WriteLine(trip.d+";"+ link.id + ";" + link.i + ";" + link.j + ";" + link.line + ";"+ link.i + "-" + link.j + ";" + link.hdwy + ";" + link.time + ";" + link.avg_cout + ";" + link.avg_time );
 
                 
             }
@@ -959,11 +963,12 @@ namespace Mint
         public void PrintAssignment(Network reseau, String nom_fichier)
         {
             System.IO.StreamWriter fich_aff = new System.IO.StreamWriter(nom_fichier, false);
+            fich_aff.WriteLine("num;i;j;ij;line;volau;boai;alij");
             foreach (Link link in reseau.links)
             {
                 if (link.volume > 0)
                 {
-                    fich_aff.WriteLine(link.id + " " + link.i + " " + link.j + " " + link.line + " " + link.volume+" "+link.boai+" "+link.alij+" "+link.pos);
+                    fich_aff.WriteLine(link.id + ";" + link.i + ";" + link.j + ";" + link.i + "-" + link.j +";"+ link.line + ";" + link.volume+";"+link.boai+";"+link.alij);
                 }
             }
             fich_aff.Close();
@@ -1039,6 +1044,10 @@ namespace Mint
 
         }
 
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class Link
